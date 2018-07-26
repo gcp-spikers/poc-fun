@@ -1,5 +1,20 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:$BUILD_ID', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:latest','.']
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:$BUILD_ID',
+         '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:latest','.']
   dir: 'bookinfo/src/productpage'
-images: ['asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1:$BUILD_ID', 
+         '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1:latest', 
+         '--build-arg', 'service_version=v1','.']
+  dir: 'bookinfo/src/details'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2:$BUILD_ID', 
+         '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2:latest', 
+         '--build-arg', 'service_version=v2', '-build-arg' ,'enable_external_book_service=true', '.']
+  dir: 'bookinfo/src/details'
+images: [
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1',
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1',
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2'
+  ]
