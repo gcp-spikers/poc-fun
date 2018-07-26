@@ -1,8 +1,10 @@
 steps:
+  # Product Page MicroService
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:$BUILD_ID',
          '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1:latest','.']
   dir: 'bookinfo/src/productpage'
+  # bookinfo MicroService
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1:$BUILD_ID', 
          '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1:latest', 
@@ -13,8 +15,36 @@ steps:
          '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2:latest', 
          '--build-arg', 'service_version=v2', '--build-arg' ,'enable_external_book_service=true', '.']
   dir: 'bookinfo/src/details'
+  # reviews MicroService
+- name: 'gcr.io/cloud-builders/gradle'
+  args: ['clean', 'build']
+  dir: 'bookinfo/src/reviews'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v1:$BUILD_ID', 
+          '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v1:latest', 
+          '--build-arg', 'service_version=v1','.']
+  dir: 'bookinfo/src/reviews/reviews-wlpcfg'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v2:$BUILD_ID', 
+        '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v2:latest', 
+          '--build-arg', 'service_version=v2', 
+          '--build-arg', 'enable_ratings=true',
+          '.']
+  dir: 'bookinfo/src/reviews/reviews-wlpcfg'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v3:$BUILD_ID', 
+        '-t', 'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v3:latest', 
+          '--build-arg', 'service_version=v3', 
+          '--build-arg', 'enable_ratings=true',
+          '--build-arg', 'star_color=red',
+          '.']
+  dir: 'bookinfo/src/reviews/reviews-wlpcfg'
+     
 images: [
   'asia.gcr.io/$PROJECT_ID/examples-bookinfo-productpage-v1',
   'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v1',
-  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2'
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-details-v2',
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v1',
+  'asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v2',
+  asia.gcr.io/$PROJECT_ID/examples-bookinfo-reviews-v3
   ]
