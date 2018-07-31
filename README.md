@@ -5,7 +5,8 @@ This is 5 samples app, from the [ISTIO sample apps](https://istio.io/docs/guides
 ## TODO
 
 1. Hook up to cloud build with Vulnerability Scanning Alpha feature enable (Terraform cloud build config)
-1. Update the Container Analysis API once the Vulnerability Scanning Passed.
+1. Enable the Container Analysis API and vulnerability Scanning
+1. Update the Container Analysis API once the Vulnerability Scanning Passed. 
 1. Spin UP GKE (terraform)
 1. Install Spinaker (Halyard)
 1. Spin up GKE in a different Project (terraform)
